@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Task-managment-Create Account
+{% endblock title %}
+
+{% block body %}
+<div class="container">
+    <h1 class="has-text-primary is-size-2">Create New Account</h1>
+    
+    <div class="box column is-4 is-offset-4" style="margin-top:5%" >
+        <form action="{% url "account:create_account" %}" method="post" accept-charset="utf-8">
+            <div class="has-text-danger">
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+                {{ form.non_field_errors }}
+            </div> </br>
+            {% include "form_template.html" with form=form %}
+            {% csrf_token %}
+            <button class="button is-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+{% endblock body %}
