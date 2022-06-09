@@ -1,0 +1,55 @@
+
+<nav class="navbar box p-0">
+    <div class="navbar-brand">
+        <a href="{% url 'dashboard:dashboard' %}">
+            <span class="is-size-1 has-text-weight-bold has-text-danger">T</span>
+            <span class="is-size-1 has-text-weight-bold has-text-link">M</span>
+        </a>
+    </div>
+    <div class="navbar-start">
+        {% if user.is_authenticated %}
+            <a class="navbar-item has-text-info" href="{% url "connection:connection_list" %}">Connections</a>
+            <a class="navbar-item has-text-info" href="#">Rooms</a>
+            <a class="navbar-item has-text-info" href="#">Tasks</a>
+        {% endif %}
+
+        <form class="navbar-item my-auto" action="{% url "connection:search_connection" %}" method="get" accept-charset="utf-8">
+            <div class="field has-addons my-auto">
+                <div class="control">
+                    <input class="input" type="text" placeholder="Search..." name="search">
+                </div>
+                <div class="control">
+                    <button type="submit" class="button is-info">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="navbar-end">
+        {% if user.is_authenticated %}
+            <a class="navbar-item has-text-info" href="#">Notifications</a>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <p class="navbar-link">
+                    {{ user.username }}
+                </p>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="{% url "account:edit_profile" %}">
+                        Edit Profile
+                    </a>
+                    <a class="navbar-item" href="{% url "account:password_change" %}">
+                        Change Password
+                    </a>
+                </div>
+            </div>
+            <a class="navbar-item" href="{% url "account:logout" %}"><p class="button">Logout</p></a>
+        {% else %}
+            <a class="navbar-item" href="{% url "account:login" %}"><p class="button">Login</p></a>
+            <a class="navbar-item" href="{% url "account:create_account" %}"><p class="button">Signup</p></a>
+        {% endif %}
+
+    </div>
+</nav>
+
