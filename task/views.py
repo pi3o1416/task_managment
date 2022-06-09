@@ -1,8 +1,10 @@
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from .forms import TaskForm
+from .models import Task
 
 # Create your views here.
 
@@ -21,7 +23,7 @@ class CreateTask(LoginRequiredMixin, View):
             form = form.save()
             form.created_by = request.user
             form.save()
-            return
+            return redirect(reverse('task:created_task_list'))
         return render(request, self.template_name, {'form': form})
 
 
@@ -53,5 +55,5 @@ class CreatedTaskList(LoginRequiredMixin, View):
         return render(request, self.template_name, {'tasks': tasks})
 
     def get_queryset(self, user):
-        tasks = Task.objects.filter(created_by=user)
+        tasks = Task.objects.filter(created_by=user).order_by('-created_at')
         return tasks

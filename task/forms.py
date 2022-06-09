@@ -7,7 +7,11 @@ from .models import Task
 class TaskForm(forms.ModelForm):
     last_date = forms.DateTimeField(
         widget=forms.DateInput(attrs={'type': 'date'}),
-        label=_('Date Of Birth'),
+        label=_('Last Date of Submission'),
+    )
+    description = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'textarea'}),
+        label=_('Description')
     )
 
     class Meta:
