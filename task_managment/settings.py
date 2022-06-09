@@ -46,7 +46,11 @@ INSTALLED_APPS = [
 
     #Local Apps
     'account.apps.AccountConfig',
+    'dashboard.apps.DashboardConfig',
+    'connection.apps.ConnectionConfig',
+    'task.apps.TaskConfig',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,8 +140,13 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Custom Settings
-AUTH_USER_MODEL = 'account.User'
 
+AUTH_USER_MODEL = 'account.User'
+LOGIN_URL = 'account:login'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'
+LOGOUT_REDIRECT_URL = 'dashboard:info'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 
