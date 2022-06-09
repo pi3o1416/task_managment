@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Connection Requests
+{% endblock  %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="is-size-2 has-text-primary">Connection Requests</h1>
+        {% if connection_requests %}
+            <form action="{% url "connection:confirm_connection" %}" method="post" accept-charset="utf-8">
+                {% csrf_token %}
+                {% for connection_request in connection_requests %}
+                    <div class="box columns">
+                        <div class="column">
+                            <div>
+                                <h1 class="is-size-4 has-text-primary-dark">{{ connection_request.connected_from.username }}</h1>
+                            </div>
+                            <p>
+                                <strong>{{ connection_request.request_from.username }}</strong><br>
+                            </p>
+                        </div>
+                        <div class="column">
+                            <button class="button" name="connection_request_id" value="{{ connection_request.id }}">Accept</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
+        {% endif %}
+    </div>
+
+{% endblock body %}
