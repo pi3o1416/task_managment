@@ -1,5 +1,5 @@
 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.http import Http404
@@ -13,7 +13,8 @@ from .models import Task, TaskAssignment
 # Create your views here.
 
 
-class CreateTask(LoginRequiredMixin, View):
+class CreateTask(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'task.add_task'
     form_class = TaskForm
     template_name = 'task/create_task.html'
 
@@ -31,7 +32,8 @@ class CreateTask(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
 
-class EditTask(LoginRequiredMixin, UserPassesTestMixin, View):
+class EditTask(LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin, View):
+    permission_required = 'task.change_task'
     form_class = TaskForm
     template_name = 'task/edit_task.html'
 
@@ -63,7 +65,8 @@ class EditTask(LoginRequiredMixin, UserPassesTestMixin, View):
         return task.created_by == self.request.user
 
 
-class DeleteTask(LoginRequiredMixin, UserPassesTestMixin, View):
+class DeleteTask(LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin, View):
+    permission_required = 'task.delete_task'
     def post(self, request, id):
         task = self.get_object(id)
         task.delete()
