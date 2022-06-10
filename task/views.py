@@ -1,6 +1,7 @@
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -11,6 +12,7 @@ from .models import Task, TaskAssignment
 
 
 # Create your views here.
+User = get_user_model()
 
 
 class CreateTask(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -131,12 +133,14 @@ class AssignTask(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def get(self, request, id):
         task = self.get_object(id)
-        return render(request, self.template_name, {'task': task})
+        connections = self.get_user_connection(request.user)
+        return render(request, self.template_name, {'task': task, 'connections': connections})
 
     def post(self, request, id):
         task = self.get_object(id)
         assign_to = request.POST.getlist('assign_to')
-        for user in assign_to:
+        for username in assign_to:
+            user = User.objects.get(username=username)
             task_assignment = TaskAssignment(task=task, assigned_to=user)
             task_assignment.save()
         return redirect(reverse('task:task_queue'))
@@ -147,6 +151,10 @@ class AssignTask(LoginRequiredMixin, UserPassesTestMixin, View):
             return task
         except Task.DoesNotExist:
             raise Http404
+
+    def get_user_connection(self, user):
+        connections = user.connected_to.filter(connection_status='ACC')
+        return connections
 
     def test_func(self):
         task = self.get_object(self.kwargs['id'])

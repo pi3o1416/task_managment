@@ -11,9 +11,9 @@
         <h1 class="has-text-primary is-size-5">Assign To</h1>
         <form action="{% url "task:assign_task" task.id %}" method="post" accept-charset="utf-8">
             {% csrf_token %}
-            {% for connections in user.connected_to.all %}
+            {% for connection in connections %}
             <div class="box">
-                <input type="checkbox" value="{{connections.connected_from}}" name="assign_to" id=""/> {{ connections.connected_from }}
+                <input type="checkbox" value="{{connection.connected_to}}" name="assign_to" id=""/> {{ connection.connected_to }}
             </div>
             {% endfor %}
             <button class="button" type="submit">Submit</button>

@@ -9,43 +9,54 @@
 {% block body %}
     <div class="container">
         <h1 class="is-size-2 has-text-primary">Created Task List</h1>
-        {% if tasks %}
-            {% for task in tasks %}
-                <div class="box columns">
-                    <div class="column">
-                        <div>
-                            <h1 class="is-size-4 has-text-primary-dark">{{ task.headline }}</h2>
-                        </div>
-                        <p>
-                            <strong>Created at: {{ task.created_at }}</strong><br>
-                            <strong>Last Date: {{ task.last_date }}</strong><br>
-                        </p>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <form action="{% url "task:edit_task" task.id %}" method="post" accept-charset="utf-8">
-                                {% csrf_token %}
-                                <button class="button" name="task" value="{{ task.id }}">Edit</button>
-                            </form>
-                        </div>
-                        <div class="column">
+        <div class="columns">
+            <div class="column">
+                {% if tasks %}
+                    {% for task in tasks %}
+                        <div class="box columns">
+                            <div class="column is-8">
+                                <div>
+                                    <h1 class="is-size-4 has-text-primary-dark">{{ task.headline }}</h2>
+                                </div>
+                                <p>
+                                    <strong>Created at: {{ task.created_at }}</strong><br>
+                                    <strong>Last Date: {{ task.last_date }}</strong><br>
+                                </p>
+                            </div>
+                            <div class="columns">
+                                <div class="column">
+                                    <form action="{% url "task:edit_task" task.id %}" method="post" accept-charset="utf-8">
+                                        {% csrf_token %}
+                                        <button class="button" name="task" value="{{ task.id }}">Edit</button>
+                                    </form>
+                                </div>
+                                <div class="column">
 
-                            <form action="{% url "task:delete_task" task.id %}" method="post" accept-charset="utf-8">
-                                {% csrf_token %}
-                                <button class="button" name="task" value="{{ task }}">Delete</button>
-                            </form>
-                        </div>
-                        <div class="column">
+                                    <form action="{% url "task:delete_task" task.id %}" method="post" accept-charset="utf-8">
+                                        {% csrf_token %}
+                                        <button class="button" name="task" value="{{ task }}">Delete</button>
+                                    </form>
+                                </div>
+                                <div class="column">
 
-                            <form action="{% url "task:assign_task" task.id %}" method="get" accept-charset="utf-8">
-                                {% csrf_token %}
-                                <button class="button" name="task" value="{{ task }}">Assign</button>
-                            </form>
+                                    <form action="{% url "task:assign_task" task.id %}" method="get" accept-charset="utf-8">
+                                        {% csrf_token %}
+                                        <button class="button" name="task" value="{{ task }}">Assign</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="column is-1">
+                <a href="{% url "task:create_task" %}">
+                    <button class="button is-info">Create new task</button>
+                </a>
+
+
+            </div>
+        </div>
     </div>
 
 {% endblock body %}
