@@ -8,9 +8,6 @@
 */*/__pycache__/
 */*/*/__pycache__/
 
-#migrations files
-*/migrations/
-
 #sqlite db file
 /db.sqlite3
 
