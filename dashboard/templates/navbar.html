@@ -11,7 +11,8 @@
             <a class="navbar-item has-text-info" href="{% url "connection:connection_list" %}">Connections</a>
             <a class="navbar-item has-text-info" href="{% url "connection:request_list" %}">Request</a>
             <a class="navbar-item has-text-info" href="#">Rooms</a>
-            <a class="navbar-item has-text-info" href="{% url "task:created_task_list" %}">Created Tasks</a>
+            <a class="navbar-item has-text-info" href="{% url "task:created_task_list" %}">Your Tasks</a>
+            <a class="navbar-item has-text-info" href="{% url "task:task_queue" %}">Tasks</a>
         {% endif %}
 
         <form class="navbar-item my-auto" action="{% url "connection:search_connection" %}" method="get" accept-charset="utf-8">
