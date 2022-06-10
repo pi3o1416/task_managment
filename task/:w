@@ -1,6 +1,5 @@
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -29,25 +28,22 @@ class CreateTask(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
 
+class TaskDetail():
+    pass
+
+
 class EditTask(LoginRequiredMixin, UserPassesTestMixin, View):
     form_class = TaskForm
-    template_name = 'task/edit_task.html'
-
+    template_name = 'task/edit_task.html
+    '
     def get(self, request, id):
         task = self.get_object(id)
         form = self.form_class(instance=task)
-        return render(request, self.template_name, {'form': form, 'task': task})
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, id):
         task = self.get_object(id)
         form = self.form_class(instance=task, data=request.POST)
-        if form.is_valid():
-            task = form.save()
-            task.save()
-            messages.success(request, 'Successfully Updated Profile')
-        else:
-            messages.error(request, 'Profile update request failed')
-        return redirect(reverse('task:edit_task', args=[task.id]))
 
     def get_object(self, id):
         try:
@@ -56,9 +52,9 @@ class EditTask(LoginRequiredMixin, UserPassesTestMixin, View):
         except Task.DoesNotExist:
             raise Http404
 
+
     def test_func(self):
-        task = self.get_object(self.kwargs['id'])
-        return task.created_by == self.request.user
+        return True
 
 
 class DeleteTask():

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Task-managment-Edit Task
+{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="has-text-primary is-size-2">Edit Task</h1>
+        <p class="is-size-5">
+            Fill this form to update user information.
+        </p>
+        <div class="box column is-4 is-offset-4" style="margin-top:5%" >
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="has-text-danger">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="has-text-success">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <form action="{% url "task:edit_task" task.id %}" method="post" accept-charset="utf-8">
+                <div class="has-text-danger">
+                    {{ form.non_field_errors }}
+                </div> </br>
+                {% include "form_template.html" with form=form %}
+                {% csrf_token %}
+                <button class="button is-primary" style="margin-left:40%">Submit</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}
