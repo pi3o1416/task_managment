@@ -8,25 +8,37 @@
 {% block body %}
     <div class="container">
         <h1 class="is-size-2 has-text-primary">Search User</h1>
-        {% if users %}
-            <form action="{% url "connection:request_connection" %}" method="post" accept-charset="utf-8">
-                {% for user in users %}
-                    <div class="box columns">
-                        <div class="column">
-                            <div>
-                                <h1 class="is-size-3 has-text-primary-dark">{{ user.username }}</h1>
-                            </div>
-                            <p>
-                                <strong>{{ user.full_name }}</strong><br>
-                            </p>
+        {% if peoples %}
+            {% for people in peoples %}
+                <div class="box columns">
+                    <div class="column">
+                        <div>
+                            <h1 class="is-size-3 has-text-primary-dark">{{ people.username }}</h1>
                         </div>
-                        <div class="column">
-                            {% csrf_token %}
-                            <button class="button" name="username" value="{{user.username}}">Connect</button>
-                        </div>
+                        <p>
+                            <strong>{{ people.full_name }}</strong><br>
+                        </p>
                     </div>
-                {% endfor %}
-            </form>
+                    <div class="column">
+                        {% if people.id in connections %}
+                            <button class="button" name="username" value="{{people.username}}" disabled>Connected</button>
+                        {% elif people.id in pending_connections %}
+                            <button class="button" name="username" value="{{people.username}}" disabled>Pending</button>
+                        {% elif people.id in connection_requests %}
+                            <form action="{% url "connection:confirm_connection" %}" method="post" accept-charset="utf-8">
+                                {% csrf_token %}
+                                <button class="button" name="username" value="{{people.username}}">Accept</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url "connection:request_connection" %}" method="post" accept-charset="utf-8">
+                                {% csrf_token %}
+                                <button class="button" name="username" value="{{people.username}}">Connect</button>
+                            </form>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
         {% endif %}
     </div>
 

@@ -90,15 +90,31 @@ class RequestList(LoginRequiredMixin, View):
 
 class SearchUser(LoginRequiredMixin, View):
     template_name = 'connection/search.html'
+    context = dict()
 
     def get(self, request):
         keyword = request.GET['search']
         user = request.user
-        users = self.get_queryset(keyword, user)
-        return render(request, self.template_name, {'users': users, 'keyword': keyword})
+        self.context['peoples'] = self.get_queryset(keyword, user)
+        self.context['keyword'] = keyword
+        self.context['connections'] = self.get_connections_by_status(
+            user.connected_to)
+        self.context['pending_connections'] = self.get_connections_by_status(
+            user.connected_to, status=PENDING)
+        self.context['connection_requests'] = self.get_connections_by_status(
+            user.connected_from, status=PENDING, column_name='connected_from')
+        return render(request, self.template_name, self.context)
 
     def get_queryset(self, keyword, user):
         condition1 = Q(username__icontains=keyword)
         condition2 = Q(username=user.username)
         users = User.objects.filter(condition1 & ~condition2)
         return users
+
+    def get_connections_by_status(self, user_relation, status=ACCEPTED, column_name='connected_to'):
+        """
+        user_relation indicate either connected_to or connected_from
+        """
+        connections = user_relation.filter(
+            connection_status=status).values_list(column_name, flat=True)
+        return connections

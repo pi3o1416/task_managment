@@ -1,0 +1,35 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Search
+{% endblock  %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="is-size-2 has-text-primary">Search User</h1>
+        {% if peoples %}
+            <form action="{% url "connection:request_connection" %}" method="post" accept-charset="utf-8">
+                {% for people in peoples %}
+                    <div class="box columns">
+                        <div class="column">
+                            <div>
+                                <h1 class="is-size-3 has-text-primary-dark">{{ people.username }}</h1>
+                            </div>
+                            <p>
+                                <strong>{{ people.full_name }}</strong><br>
+                            </p>
+                        </div>
+                        <div class="column">
+                            {% csrf_token %}
+                                
+                            {% endif %}
+                            <button class="button" name="username" value="{{people.username}}">Connect</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
+        {% endif %}
+    </div>
+
+{% endblock body %}
