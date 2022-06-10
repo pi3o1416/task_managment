@@ -13,3 +13,6 @@
 
 #sqlite db file
 /db.sqlite3
+
+#media/files
+/media/submissions/*
