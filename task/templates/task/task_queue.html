@@ -19,7 +19,7 @@
                         <p>
                             <strong>Last Date: {{ assignment.task.last_date }}</strong><br>
                             <strong>Submitted:                             
-                                {% if assignment.task.is_submitted %}
+                                {% if assignment.is_submitted %}
                                     Yes
                                 {% else %}
                                     No
@@ -29,9 +29,14 @@
                         </p>
                     </div>
                     <div class="column">
-                        <form action="{% url "task:submit_assignment" assignment.id %}" method="get" accept-charset="utf-8">
-                            {% csrf_token %}
+                        <form action="{% url "task:submit_task" assignment.id %}" method="get" accept-charset="utf-8">
+                            {% if assignment.is_submitted %}
+                            <button class="button" name="" value="">Completed</button>
+                                
+                            {% else %}
+                                
                             <button class="button" name="task" value="{{ task }}">Submit</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

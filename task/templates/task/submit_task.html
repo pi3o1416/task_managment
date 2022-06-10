@@ -1,0 +1,26 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+    Submit Task
+{% endblock title %}
+
+{% block body %}
+    <div class="container column is-four-fifths ">
+        <h1 class="is-size-2 has-text-info-dark" style="margin-top:3%">{{ assignment.task.headline }}</h1>
+        <p><span class="is-size-5"><strong>{{ assignment.task.created_by }}</strong></span>  <span class="has-text-gray">{{ assignment.task.created_at }}</span></p>
+        <br>
+        <p class="has-text-black-bis is-size-6">
+            {{ assignment.task.description }}
+        </p>
+        <div>
+            <form action="{% url "task:submit_task" assignment.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include "form_template.html" with form=form %}
+                <button class="button" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock body %}
+

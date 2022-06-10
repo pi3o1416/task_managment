@@ -1,7 +1,7 @@
 
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import Task
+from .models import Task, TaskSubmission
 
 
 class TaskForm(forms.ModelForm):
@@ -21,3 +21,10 @@ class TaskForm(forms.ModelForm):
     def save(self):
         task = super().save(commit=False)
         return task
+
+
+class SubmissionForm(forms.ModelForm):
+    class Meta:
+        model = TaskSubmission
+        fields = ['attached_file',]
+

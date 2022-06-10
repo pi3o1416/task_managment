@@ -5,7 +5,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from .forms import TaskForm
+from .forms import TaskForm, SubmissionForm
 from .models import Task, TaskAssignment
 
 # Create your views here.
@@ -61,8 +61,53 @@ class EditTask(LoginRequiredMixin, UserPassesTestMixin, View):
         return task.created_by == self.request.user
 
 
-class DeleteTask():
-    pass
+class DeleteTask(LoginRequiredMixin, UserPassesTestMixin, View):
+    def post(self, request, id):
+        task = self.get_object(id)
+        task.delete()
+        return redirect(reverse('task:created_task_list'))
+
+    def get_object(self,  id):
+        try:
+            return Task.objects.get(id=id)
+        except Task.DoesNotExist:
+            raise Http404
+
+    def test_func(self):
+        task = self.get_object(self.kwargs['id'])
+        return task.created_by == self.request.user
+
+
+class SubmitTask(LoginRequiredMixin, View):
+    template_name = 'task/submit_task.html'
+    form_class = SubmissionForm
+
+    def get(self, request, id):
+        form = self.form_class()
+        assignment = self.get_object(id)
+        return render(request, self.template_name, {'form': form, 'assignment': assignment})
+
+    def post(self, request, id):
+        form = self.form_class(request.POST, request.FILES)
+        assignment = self.get_object(id)
+        if form.is_valid():
+            submission = form.save(commit=False)
+            submission.assignment = assignment
+            assignment.is_submitted = True
+            submission.save()
+            assignment.save()
+            return redirect(reverse('task:task_queue'))
+        return render(request, self.template_name, {'form': form, 'assignment': assignment})
+
+    def get_object(self, id):
+        try:
+            return TaskAssignment.objects.get(id=id)
+        except TaskAssignment.DoesNotExist:
+            raise Http404
+
+    def test_func(self):
+        assignment = self.get_object(self.kwargs['id'])
+        return assignment.assigned_to == self.request.user and not assignment.is_submitted
 
 
 class TaskQueue(LoginRequiredMixin, View):

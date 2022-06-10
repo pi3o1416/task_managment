@@ -30,7 +30,7 @@
                         </div>
                         <div class="column">
 
-                            <form action="#" method="post" accept-charset="utf-8">
+                            <form action="{% url "task:delete_task" task.id %}" method="post" accept-charset="utf-8">
                                 {% csrf_token %}
                                 <button class="button" name="task" value="{{ task }}">Delete</button>
                             </form>

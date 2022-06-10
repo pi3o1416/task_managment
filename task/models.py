@@ -2,6 +2,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from .services import get_file_path
 
 User = get_user_model()
 
@@ -36,10 +37,12 @@ class TaskAssignment(models.Model):
         return "{}-{}".format(self.task.headline, self.assigned_to.username)
 
 
+
 class TaskSubmission(models.Model):
     assignment = models.ForeignKey(to=TaskAssignment, on_delete=models.CASCADE, related_name='submissions')
     submission_date = models.DateTimeField(_('Task submission date'), auto_now_add=True)
-    attached_file = models.FileField(_('Attached files'))
+    attached_file = models.FileField(_('Attached files'), upload_to=get_file_path)
+
 
 
 
