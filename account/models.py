@@ -27,5 +27,5 @@ class User(AbstractUser):
 
 @receiver(post_save, sender=User)
 def add_to_general_gourp(sender, instance, **kwargs):
-    group = Group.objects.get('general_user')
+    group = Group.objects.get(name='general_user')
     group.user_set.add(instance)
