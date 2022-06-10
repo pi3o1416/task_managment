@@ -1,6 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from .services import get_file_path
 
@@ -35,6 +36,9 @@ class TaskAssignment(models.Model):
 
     def __str__(self):
         return "{}-{}".format(self.task.headline, self.assigned_to.username)
+
+    def get_absolute_url(self):
+        return reverse('task:submit_task', kwargs={'id': self.pk})
 
 
 
