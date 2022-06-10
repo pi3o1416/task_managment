@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'connection.apps.ConnectionConfig',
     'task.apps.TaskConfig',
+    'notification.apps.NotificationConfig',
 ]
 
 
