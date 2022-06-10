@@ -15,5 +15,5 @@ class NotificationList(View):
         return render(request, self.template_name, {'notifications': notifications})
 
     def get_queryset(self, user):
-        notifications = Notification.objects.filter(notification_to=user)
-        return notifications
+        print(user, 'i#####################################################')
+        return Notification.objects.filter(notification_to=user)

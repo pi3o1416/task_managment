@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Task-managment Notifications
+{% endblock  %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="is-size-2 has-text-primary">Notifications</h1>
+        {% if notifications %}
+            {% for notification in notifications %}
+                <div class="box columns">
+                    <div class="column">
+                        <div>
+                            <h1 class="is-size-4 has-text-primary-dark">{{ notification.notification_headline|safe }}</h2>
+                        </div>
+                        <p>
+                            <strong>Time: {{ notification.notification_at }}</strong><br>
+                        </p>
+                        <p>
+                            {{ notification.description|safe }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock body %}
