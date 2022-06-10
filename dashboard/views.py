@@ -16,5 +16,5 @@ class Dashboard(LoginRequiredMixin, View):
 class Info(View):
     template_name = 'pages/info.html'
 
-    def get(self, request, format=None):
-        return render(request, self.template_name)
+    def get(self, request):
+        return render(request, self.template_name, {})
