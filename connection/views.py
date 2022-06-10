@@ -28,7 +28,7 @@ class RequestConnection(LoginRequiredMixin, View):
             connection_status='PEN'
         )
         connection.save()
-        return render(request, self.template_name, {'user': request_to})
+        return render(request, self.template_name, {'request_to': request_to})
 
     def get_object(self, username):
         try:
