@@ -21,5 +21,6 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('connection/', include('connection.urls')),
     path('task/', include('task.urls')),
+    path('notification/', include('notification.urls')),
     path('', include('dashboard.urls')),
 ]
