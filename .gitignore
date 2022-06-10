@@ -1,7 +1,7 @@
 
 
 #configuration file
-/*/config.env
+#/*/config.env
 
 #cache files
 */__pycache__/
