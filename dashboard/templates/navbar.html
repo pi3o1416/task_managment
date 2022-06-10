@@ -9,6 +9,7 @@
     <div class="navbar-start">
         {% if user.is_authenticated %}
             <a class="navbar-item has-text-info" href="{% url "connection:connection_list" %}">Connections</a>
+            <a class="navbar-item has-text-info" href="{% url "connection:request_list" %}">Request</a>
             <a class="navbar-item has-text-info" href="#">Rooms</a>
             <a class="navbar-item has-text-info" href="{% url "task:created_task_list" %}">Created Tasks</a>
         {% endif %}

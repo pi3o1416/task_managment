@@ -25,10 +25,9 @@
                         {% elif people.id in pending_connections %}
                             <button class="button" name="username" value="{{people.username}}" disabled>Pending</button>
                         {% elif people.id in connection_requests %}
-                            <form action="{% url "connection:confirm_connection" %}" method="post" accept-charset="utf-8">
-                                {% csrf_token %}
+                            <a href="{% url "connection:request_list" %}" target="_blank">
                                 <button class="button" name="username" value="{{people.username}}">Accept</button>
-                            </form>
+                            </a>
                         {% else %}
                             <form action="{% url "connection:request_connection" %}" method="post" accept-charset="utf-8">
                                 {% csrf_token %}
