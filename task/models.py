@@ -12,13 +12,13 @@ class Task(models.Model):
     headline = models.CharField(max_length=200)
     created_by = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='tasks')
     created_at = models.DateTimeField(
-        _('Task Creation Date'),
+        _('Task creation time'),
         auto_now_add=True
     )
     last_date = models.DateTimeField(
         _('Last date of submission'),
     )
-    description = models.TextField(_('Task Description'))
+    description = models.TextField(_('Task description'))
 
     def __str__(self):
         return self.headline
@@ -30,7 +30,7 @@ class Task(models.Model):
 class TaskAssignment(models.Model):
     task = models.ForeignKey(to=Task, on_delete=models.CASCADE, related_name='assignments')
     assigned_to = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='assigned_tasks')
-    assigned_at = models.DateTimeField(_('Assigned time'), auto_now_add=True)
+    assigned_at = models.DateTimeField(_('Task assigned at'), auto_now_add=True)
     is_submitted = models.BooleanField(default=False)
     notified = models.BooleanField(default=False)
 
