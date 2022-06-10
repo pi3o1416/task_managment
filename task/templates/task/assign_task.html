@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Assign Task
+{% endblock  %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="has-text-primary is-size-2">Assign Task</h1>
+        <h1 class="has-text-primary is-size-5">Assign To</h1>
+        <form action="{% url "task:assign_task" task.id %}" method="post" accept-charset="utf-8">
+            {% csrf_token %}
+            {% for connections in user.connected_to.all %}
+            <div class="box">
+                <input type="checkbox" value="{{connections.connected_from}}" name="assign_to" id=""/> {{ connections.connected_from }}
+            </div>
+            {% endfor %}
+            <button class="button" type="submit">Submit</button>
+        </form>
+
+
+
+
+    </div>
+
+{% endblock body %}

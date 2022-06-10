@@ -28,12 +28,12 @@ class Task(models.Model):
 class TaskAssignment(models.Model):
     task = models.ForeignKey(to=Task, on_delete=models.CASCADE, related_name='assignments')
     assigned_to = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='assigned_tasks')
-    assighed_at = models.DateTimeField(_('Assigned time'), auto_now_add=True)
+    assigned_at = models.DateTimeField(_('Assigned time'), auto_now_add=True)
     is_submitted = models.BooleanField(default=False)
     notified = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{}-{}".format(self.task.headline-self.assigned_to.username)
+        return "{}-{}".format(self.task.headline, self.assigned_to.username)
 
 
 class TaskSubmission(models.Model):

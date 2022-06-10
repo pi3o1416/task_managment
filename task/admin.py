@@ -11,8 +11,8 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(TaskAssignment)
 class TaskAssignmentAdmin(admin.ModelAdmin):
-    list_display = ('task', 'assigned_to', 'assighed_at', 'is_submitted', 'notified',)
-    list_filter = ("is_submitted", "assigned_to", "assighed_at",)
+    list_display = ('task', 'assigned_to', 'assigned_at', 'is_submitted', 'notified',)
+    list_filter = ("is_submitted", "assigned_to", "assigned_at",)
     search_fields = ("task",)
 
 

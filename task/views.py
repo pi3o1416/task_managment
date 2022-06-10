@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from .forms import TaskForm
-from .models import Task
+from .models import Task, TaskAssignment
 
 # Create your views here.
 
@@ -65,12 +65,42 @@ class DeleteTask():
     pass
 
 
-class TaskQueue():
-    pass
+class TaskQueue(LoginRequiredMixin, View):
+    template_name = 'task/task_queue.html'
+
+    def get(self, request):
+        assignments = self.get_queryset(request.user)
+        return render(request, self.template_name, {'assignments': assignments})
+
+    def get_queryset(self, user):
+        return user.assigned_tasks.all().order_by('is_submitted').order_by('assigned_at')
 
 
-class AssignTask():
-    pass
+class AssignTask(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = 'task/assign_task.html'
+
+    def get(self, request, id):
+        task = self.get_object(id)
+        return render(request, self.template_name, {'task': task})
+
+    def post(self, request, id):
+        task = self.get_object(id)
+        assign_to = request.POST.getlist('assign_to')
+        for user in assign_to:
+            task_assignment = TaskAssignment(task=task, assigned_to=user)
+            task_assignment.save()
+        return redirect(reverse('task:task_queue'))
+
+    def get_object(self, id):
+        try:
+            task = Task.objects.get(id=id)
+            return task
+        except Task.DoesNotExist:
+            raise Http404
+
+    def test_func(self):
+        task = self.get_object(self.kwargs['id'])
+        return task.created_by == self.request.user
 
 
 class CreatedTaskList(LoginRequiredMixin, View):

@@ -1,0 +1,42 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}
+    Task-managment Task Queue
+{% endblock  %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="is-size-2 has-text-primary">Task Queue</h1>
+        {% if assignments %}
+            {% for assignment in assignments %}
+                <div class="box columns">
+                    <div class="column">
+                        <div>
+                            <h1 class="is-size-4 has-text-primary-dark">{{ assignment.task.headline }}</h2>
+                        </div>
+                        <p>
+                            <strong>Last Date: {{ assignment.task.last_date }}</strong><br>
+                            <strong>Submitted:                             
+                                {% if assignment.task.is_submitted %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </strong>
+
+                        </p>
+                    </div>
+                    <div class="column">
+                        <form action="{% url "task:submit_assignment" assignment.id %}" method="get" accept-charset="utf-8">
+                            {% csrf_token %}
+                            <button class="button" name="task" value="{{ task }}">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock body %}
