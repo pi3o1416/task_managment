@@ -15,12 +15,12 @@ class Connection(models.Model):
     connected_to = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
-        related_name='connected_to'
+        related_name='connected_from'
     )
     connected_from = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
-        related_name='connected_from'
+        related_name='connected_to'
     )
     connected_at = models.DateTimeField(
         _('Connected Since'),
@@ -33,7 +33,7 @@ class Connection(models.Model):
     )
 
     def __str__(self):
-        return '{} connected to {}'.format(self.connected_from, self.connected_to)
+        return '{} -> {}'.format(self.connected_from, self.connected_to)
 
 
 
